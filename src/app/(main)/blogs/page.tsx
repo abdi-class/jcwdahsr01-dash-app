@@ -10,13 +10,11 @@ const BlogsPage: React.FunctionComponent<IAppProps> = (props) => {
   const getData = async () => {
     try {
       // Call data from API
-      const res = await axios.get(
-        "https://newsapi.org/v2/everything?q=tesla&from=2025-09-29&sortBy=publishedAt&apiKey=3fc668c4412748048ee5e3c1fed61fc5"
-      );
-      console.log(res.data.articles);
+      const res = await axios.get("https://jsonplaceholder.typicode.com/posts");
+      console.log(res.data);
 
       // Store data to local state(useState data)
-      setData(res.data.articles);
+      setData(res.data);
     } catch (error) {
       console.log(error);
     }
