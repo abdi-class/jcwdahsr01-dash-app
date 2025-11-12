@@ -18,7 +18,7 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
       if (emailRef.current?.value && passwordRef.current?.value) {
         // call API
         const res = await axios.post(
-          "https://zealouscolor-us.backendless.app/api/data/accounts",
+          "https://calmingstore-us.backendless.app/api/data/accounts",
           {
             email: emailRef.current.value,
             password: passwordRef.current.value,

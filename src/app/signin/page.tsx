@@ -16,9 +16,23 @@ const SignInPage: React.FunctionComponent<ISignInPageProps> = (props) => {
   const onBtSignin = async () => {
     try {
       if (emailRef.current?.value && passwordRef.current?.value) {
-        // call API
+        // - pemanggilan API untuk mencari data berdasarkan email dan password
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/accounts`, {
+          params: {
+            where: `email='${emailRef.current.value}' and password='${passwordRef.current.value}'`,
+          },
+        });
+        console.log("RESPONSE FROM API:", res.data);
 
-        router.replace("/");
+        if (res.data.length === 0) {
+          // - jika tidak ditemukan, maka berikan alert
+          alert("Akun tidak ditemukan");
+        } else {
+          // - jika data ditemukan, menyimpan data tersebut ke global state
+          localStorage.setItem("auth", JSON.stringify(res.data[0]));
+
+          router.replace("/");
+        }
       } else {
         alert("Fill in all form");
       }
@@ -29,7 +43,7 @@ const SignInPage: React.FunctionComponent<ISignInPageProps> = (props) => {
 
   return (
     <div className="w-96 bg-white p-6 shadow rounded-2xl m-auto">
-      <h2 className="text-xl font-bold mb-4">Sign Up</h2>
+      <h2 className="text-xl font-bold mb-4">Sign In</h2>
       <form className="space-y-4">
         <Input type="email" placeholder="Input Email" ref={emailRef} />
         <Input type="password" placeholder="Input Password" ref={passwordRef} />
