@@ -10,12 +10,10 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const { email, onLogOut } = useAuthStore();
 
   React.useEffect(() => {
-    // - jika localStorage auth tersedia datanya, maka akan dikonversi menjadi object dan disimpan data emailnya ke state
     const auth = localStorage.getItem("auth");
-    // if (auth) {
-    //   const data = JSON.parse(auth);
-    //   setEmail(data.email);
-    // }
+    // - jika localStorage auth tersedia token
+    // - callApi keepLogin dengan membawa token
+    // - hasil response callApi, disimpan ulang ke localStorage dan global state
   }, []);
 
   return (
