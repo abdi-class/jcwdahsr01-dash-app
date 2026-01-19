@@ -2,19 +2,20 @@
 import Link from "next/link";
 import * as React from "react";
 import { Button } from "../ui/button";
+import useAuthStore from "@/stores/authStore";
 
-interface INavbarProps {}
+interface INavbarProps { }
 
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
-  const [email, setEmail] = React.useState<string>("");
+  const { email, onLogOut } = useAuthStore();
 
   React.useEffect(() => {
     // - jika localStorage auth tersedia datanya, maka akan dikonversi menjadi object dan disimpan data emailnya ke state
     const auth = localStorage.getItem("auth");
-    if (auth) {
-      const data = JSON.parse(auth);
-      setEmail(data.email);
-    }
+    // if (auth) {
+    //   const data = JSON.parse(auth);
+    //   setEmail(data.email);
+    // }
   }, []);
 
   return (
@@ -44,7 +45,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                 type="button"
                 onClick={() => {
                   localStorage.removeItem("auth");
-                  setEmail("");
+                  onLogOut();
                 }}
               >
                 Logout

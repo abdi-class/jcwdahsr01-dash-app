@@ -4,10 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-
-interface ISignInPageProps {}
+import apiCall from "@/lib/axiosInstance";
+import useAuthStore from "@/stores/authStore";
+interface ISignInPageProps { }
 
 const SignInPage: React.FunctionComponent<ISignInPageProps> = (props) => {
+  const { onLogin } = useAuthStore();
   const router = useRouter();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -17,20 +19,26 @@ const SignInPage: React.FunctionComponent<ISignInPageProps> = (props) => {
     try {
       if (emailRef.current?.value && passwordRef.current?.value) {
         // - pemanggilan API untuk mencari data berdasarkan email dan password
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API}/accounts`, {
-          params: {
-            where: `email='${emailRef.current.value}' and password='${passwordRef.current.value}'`,
-          },
+        const res = await apiCall.post(`/accounts/auth`, {
+          email: emailRef.current.value,
+          password: passwordRef.current.value
         });
         console.log("RESPONSE FROM API:", res.data);
 
-        if (res.data.length === 0) {
+        if (!res.data.token) {
           // - jika tidak ditemukan, maka berikan alert
           alert("Akun tidak ditemukan");
         } else {
           // - jika data ditemukan, menyimpan data tersebut ke global state
-          localStorage.setItem("auth", JSON.stringify(res.data[0]));
+          localStorage.setItem("auth", res.data.token);
 
+          // - store other data like email, name, age, gender or role to global state useContext or zustand
+          onLogin({
+            email: res.data.email,
+            name: res.data.name,
+            age: res.data.age,
+            gender: res.data.gender,
+          });
           router.replace("/");
         }
       } else {

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import apiCall from "@/lib/axiosInstance";
 
 interface ISignUpPageProps { }
 
@@ -18,16 +19,8 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
   const onBtSignup = async () => {
     try {
       if (emailRef.current?.value && passwordRef.current?.value && fullNameRef.current?.value && genderRef.current?.value) {
-        console.log({
-          name: fullNameRef.current.value,
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-          gender: genderRef.current.value
-        });
-
         // call API
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API}/accounts/create`,
+        const res = await apiCall.post(`/accounts/create`,
           {
             name: fullNameRef.current.value,
             email: emailRef.current.value,
