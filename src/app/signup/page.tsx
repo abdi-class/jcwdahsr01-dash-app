@@ -5,23 +5,27 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-interface ISignUpPageProps {}
+interface ISignUpPageProps { }
 
 const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
   const router = useRouter();
+  const fullNameRef = React.useRef<HTMLInputElement>(null);
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const genderRef = React.useRef<HTMLInputElement>(null);
 
   // Function to submit
   const onBtSignup = async () => {
     try {
-      if (emailRef.current?.value && passwordRef.current?.value) {
+      if (emailRef.current?.value && passwordRef.current?.value && fullNameRef.current?.value && genderRef.current?.value) {
         // call API
         const res = await axios.post(
-          "https://calmingstore-us.backendless.app/api/data/accounts",
+          "http://localhost:6666/accounts/create",
           {
+            name: fullNameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
+            gender: genderRef.current.value,
           }
         );
         alert(`Welcome ${res.data.email}`);
@@ -38,8 +42,10 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
     <div className="w-96 bg-white p-6 shadow rounded-2xl m-auto">
       <h2 className="text-xl font-bold mb-4">Sign Up</h2>
       <form className="space-y-4">
+        <Input type="text" placeholder="Input Full Name" ref={fullNameRef} />
         <Input type="email" placeholder="Input Email" ref={emailRef} />
         <Input type="password" placeholder="Input Password" ref={passwordRef} />
+        <Input type="text" placeholder="Input Gender" ref={genderRef} />
         <Button type="button" className="w-full" onClick={onBtSignup}>
           Sign Up
         </Button>
