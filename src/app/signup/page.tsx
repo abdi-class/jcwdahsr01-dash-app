@@ -18,6 +18,13 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
   const onBtSignup = async () => {
     try {
       if (emailRef.current?.value && passwordRef.current?.value && fullNameRef.current?.value && genderRef.current?.value) {
+        console.log({
+          name: fullNameRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+          gender: genderRef.current.value
+        });
+
         // call API
         const res = await axios.post(
           "http://localhost:6666/accounts/create",
@@ -25,7 +32,7 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
             name: fullNameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
-            gender: genderRef.current.value,
+            gender: genderRef.current.value
           }
         );
         alert(`Welcome ${res.data.email}`);
