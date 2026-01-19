@@ -27,7 +27,7 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
 
         // call API
         const res = await axios.post(
-          "http://localhost:6666/accounts/create",
+          `${process.env.NEXT_PUBLIC_API}/accounts/create`,
           {
             name: fullNameRef.current.value,
             email: emailRef.current.value,
@@ -35,7 +35,9 @@ const SignUpPage: React.FunctionComponent<ISignUpPageProps> = (props) => {
             gender: genderRef.current.value
           }
         );
-        alert(`Welcome ${res.data.email}`);
+        console.log(res.data);
+
+        alert(`Welcome ${res.data.name}`);
         router.push("/");
       } else {
         alert("Fill in all form");
